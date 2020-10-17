@@ -66,6 +66,7 @@ st.write('- Some Airbnbs blah blah')
 
 st.header('How To choose an Airbnb?')
 
+
 # Outline:
 # 1. Airbnb instroduction
 # 2. Big question
