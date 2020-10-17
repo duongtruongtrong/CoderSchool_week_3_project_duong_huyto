@@ -4,22 +4,18 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# Setting the style 'seaborn' for your charts
+plt.style.use('seaborn')
+
 import warnings
 warnings.filterwarnings('ignore')
 
 import streamlit as st
 from PIL import Image
 
-#NYC_Covid_Daily_CSV
-nyc_covid_daily_oct_2020 = pd.read_csv('nyc_covid_daily_oct_2020.csv', parse_dates=True)
-nyc_covid_daily_oct_2020['DATE_OF_INTEREST'] = pd.to_datetime(nyc_covid_daily_oct_2020['DATE_OF_INTEREST'])
-
-
-airbnb_image = Image.open('airbnb-678x381.jpg')
-st.image(airbnb_image, use_column_width = True)
 # Outline:
-# 1. Airbnb instroduction
-# 2. Big question
+# 1. Big question
+# 2. Airbnb instroduction
 # 3. COVID - Why still airbnb?
 #     Unique places with unique experience;
 #     Time to relax a bit, but still follow COVID rules.
@@ -33,26 +29,47 @@ st.image(airbnb_image, use_column_width = True)
 # 5. Result: A short list of "unique" airbnb to choose
 # 6. Project difficulty
 
-st.header('Airbnb Introduction:')
-st.write('- Airbnb, the world leader in accommodations of the “sharing economy”, allows you to find places to stay directly from individuals in thousands of cities around the world.')
-st.write('- It allows you to rent apartments (or even entire houses) from people all over the world, almost everywhere in fact. The platform really revolutionized the world of accommodations.')
+# =========================================================================
+# Begin
 
-st.header('COVID - Why choose an Airbnb?')
+# Cache functions
+
+@st.cache
+def load_data(path):
+    try:
+        data = pd.read_excel(path)
+    except:
+        data = pd.read_csv(path)
+    return data
+
+# 1. Big question
+st.title('Staycation with Airbnb')
+
+# 2. Airbnb instroduction
+airbnb_image = Image.open('airbnb-678x381.jpg')
+st.image(airbnb_image, use_column_width = True)
+
+st.header('1. Airbnb Introduction')
+
+st.markdown('- **The world leader** in accommodations of the “sharing economy”, allows you to find places to stay directly from individuals in thousands of cities around the world.')
+
+st.markdown('- Able to **rent apartments or even entire houses** from people all over the world, almost everywhere in fact.')
+
+# 2. COVID - Why still airbnb?
+st.header('2. COVID - Why choose an Airbnb?')
 covid_image = Image.open('covid.jpg')
 st.image(covid_image, use_column_width = True)
 
-st.write('We are restricted to travel ever since the pandemic started. Therefore, the best option we have is to travel around our area')
+st.write('We are **restricted to travel** ever since the pandemic started. Therefore, the **best option** we have is to travel **around our area**.')
 
-st.subheader('So why choose an Airbnb?')
+# NYC_Covid_Daily_CSV
+nyc_covid_daily_oct_2020 = load_data('nyc_covid_daily_oct_2020.csv', parse_dates=True)
+nyc_covid_daily_oct_2020['DATE_OF_INTEREST'] = pd.to_datetime(nyc_covid_daily_oct_2020['DATE_OF_INTEREST'])
 
+# NYC_Covid_Daily_Chart
+covid, ax = plt.subplots(figsize=(20, 8))
 
-st.header('Covid - Why choose an Airbnb?')
-
-st.write('We are restricted to travel ever since the pandemic started. Therefore, the best option we have is to travel around the our area')
-
-f, ax = plt.subplots(figsize=(20, 8))
-
-f.suptitle('New York COVID-19 Cases', fontsize=25)
+covid.suptitle('New York COVID-19 Cases', fontsize=25)
 
 plt.rc('font', size=15) #controls default text size
 plt.rc('axes', titlesize=20) #fontsize of the title
@@ -64,24 +81,24 @@ plt.rc('legend', fontsize=20) #fontsize of the legend
 sns.lineplot(x='DATE_OF_INTEREST', y='Cases', data=nyc_covid_daily_oct_2020, ax=ax, label='Daily')
 sns.lineplot(x='DATE_OF_INTEREST', y='7-day average', data=nyc_covid_daily_oct_2020, ax=ax, label='7-day average')
 ax.grid(True)
-st.pyplot(f)
+st.pyplot(covid)
 
-st.write('So why choose an Airbnb?')
+st.subheader('You are a New Yorker')
+st.markdown('- **Rarely** go to the other side of your city;')
+st.markdown('- Or **visit other cities** in New York.')
 
-st.markdown('**You are a New Yorker**')
-st.write('- Rarely have a chance to go to the other side of your city;')
-st.write('- Or visit another city in New York.')
+st.subheader('Live As a Local with Unique Experience')
+st.markdown('- **Unique experience** with Airbnb that hotels cannot provide.')
+st.markdown('- **Immersing you in the local culture** than getting a hotel room')
 
-st.markdown('**Live As a Local with Unique Experience**')
-st.write('- Airbnb provides you the unique experience that hotels cannot.')
-st.write('- Airbnb allows you to live more like a local than a tourist.')
-st.write('- Airbnb usually does a better job of immersing you in the local culture than getting a hotel room')
+st.subheader('Meet People')
+st.markdown('Airbnb gives you the option to **stay with the local host**. The host will often be happy to welcome you and to tell you every interesting thing about the place you visit.')
 
-st.markdown('**Meet People**')
-st.write('- Airbnb gives you the option to stay with the host. The host will often be happy to welcome you and to tell you every interesting thing about the place you visit.')
+st.subheader('Save Money')
+st.markdown('_(sometimes)_')
 
-st.markdown('**Save Money (sometimes)**')
-st.write('- Depends on the location, Airbnbs are usually cheaper than hotels')
-st.write('- Especially when you travel in a group, retinting an Airbnb is definitely cheaper than a hotel')
+st.markdown('- Airbnbs are usually **cheaper** than hotels _(depends on the location)_')
+st.markdown('- **Travel in a group**, Airbnb is definitely cheaper than a hotel.')
 
-st.header('How To choose the best unique Airbnb?')
+# 4. How to choose an airbnb:
+st.header('3. How To choose the best unique Airbnb?')
