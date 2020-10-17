@@ -8,6 +8,10 @@ import warnings
 warnings.filterwarnings('ignore')
 
 import streamlit as st
+from PIL import Image
+
+airbnb_image = Image.open('airbnb-678x381.jpg')
+st.image(airbnb_image, use_column_width = True)
 
 # Outline:
 # 1. Airbnb instroduction
@@ -29,7 +33,12 @@ st.header('Airbnb Introduction:')
 st.write('- Airbnb, the world leader in accommodations of the “sharing economy”, allows you to find places to stay directly from individuals in thousands of cities around the world.')
 st.write('- It allows you to rent apartments (or even entire houses) from people all over the world, almost everywhere in fact. The platform really revolutionized the world of accommodations.')
 
+<<<<<<< HEAD
 
+=======
+covid_image = Image.open('covid.jpg')
+st.image(covid_image, use_column_width = True)
+>>>>>>> 3c7d4a5ff33c0e6ad7c7695d3d073711602b5f93
 st.header('Covid - Why choose an Airbnb?')
 
 st.write('We are restricted to travel ever since the pandemic started. Therefore, the best option we have is to travel around the our area')
