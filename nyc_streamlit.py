@@ -105,19 +105,53 @@ st.markdown('- **Travel in a group**, Airbnb is definitely cheaper than a hotel.
 # 4. How to choose an airbnb:
 st.header('3. How To choose the best unique Airbnb?')
 
+# Current number of airbnb listings in NYC: Chart and xlsx
+df_meaningful_col = load_data('cleansed_listings_meaningful_2020.xlsx')
+
+total_number_aribnb_nyc = len(df_meaningful_col)
+
+total_number_aribnb, ax = plt.subplots(figsize=(2, 1))
+total_number_aribnb.suptitle('Current number of Airbnb in New York', fontsize=15)
+ax.text(x=0, y=0, s=str(total_number_aribnb_nyc), fontsize=40)
+ax.axis("off")
+
+st.pyplot(total_number_aribnb)
+
+# Unique Airbnb concept
 st.subheader('What is unique Airbnb?')
-st.markdown('Airbnb with reviews **containing the word "unique"** and its synonyms: distinctive, special, extraordinary')
+st.markdown('Airbnb with reviews **containing the word "unique"** and its synonyms: distinctive, special, extraordinary.')
 
-st.markdown('Example:')
+st.markdown('**Example**:')
+df_sample_review = load_data('review_sample.xlsx')
+st.dataframe(df_sample_review)
 
+st.markdown('''**"Unique" Review of listing id 9576478**: Vitaliy provided very informative directions and instructions on getting into the apartment. The apartment was exactly like it was in the photos. Harlem is a **unique** neighbourhood in NYC and will give you a different flavour of the city.''')
 
-st.markdown('Each Airbnb will have a certain number of "unique" reviews.')
+st.markdown('''**"Unique" Review of listing id 27930717**: The location of this apartment is great - very close to the subway and it allows you to reach Manhattan quickly. Good restaurants in the neighborhood. Maxime's (Hidden by Airbnb) , who were at home when we stayed, were absolutely fantastic and they made our experience in NYC **special**.''')
 
-# Airbnb total review distribution
-df_meaningful_col = load_data('listings_meaningful_2020.xlsx')
-plt.figure(figsize=(18,8))
+# Airbnb total review distribution chart
+st.subheader('Number of "unique" reviews.')
 
-ax = sns.boxplot(data=df_meaningful_col,
-                 x='total_unique_reviews')
-ax.set_xticks(list(range(0, 151, 2)))
-ax.gird(True)
+unique_review, ax = plt.subplots(figsize=(18, 5))
+unique_review.suptitle('Number of "Unique" Reviews Distrubution', fontsize=25)
+
+sns.boxplot(data=df_meaningful_col,
+            x='total_unique_reviews',
+            ax=ax)
+ax.set_xticks(list(range(0, 8, 2)) + list(range(10, 161, 50)))
+
+st.pyplot(unique_review)
+
+st.markdown('Most of Aibnb has less than **2 "unique" reviews**, which is **too small**.')
+st.markdown('The more "unique" reviews the Airbnb has, the more authentically unique the Airbnb is.')
+st.markdown('The number of "unique" reviews should be more than the **whisker point** to be called a unique Aribnb.')
+
+# Current number of airbnb listings in NYC: Chart and xlsx
+df_unique_outliers = load_data('nyc_unique_aibnb.xlsx')
+
+total_number_unique_aribnb, ax = plt.subplots(figsize=(2, 1))
+total_number_unique_aribnb.suptitle('Total number of unique Airbnb in New York', fontsize=15)
+ax.text(x=0, y=0, s=str(len(df_unique_outliers)), fontsize=40)
+ax.axis("off")
+
+st.pyplot(total_number_unique_aribnb)
