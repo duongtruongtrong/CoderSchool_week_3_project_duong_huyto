@@ -104,3 +104,20 @@ st.markdown('- **Travel in a group**, Airbnb is definitely cheaper than a hotel.
 
 # 4. How to choose an airbnb:
 st.header('3. How To choose the best unique Airbnb?')
+
+st.subheader('What is unique Airbnb?')
+st.markdown('Airbnb with reviews **containing the word "unique"** and its synonyms: distinctive, special, extraordinary')
+
+st.markdown('Example:')
+
+
+st.markdown('Each Airbnb will have a certain number of "unique" reviews.')
+
+# Airbnb total review distribution
+df_meaningful_col = load_data('listings_meaningful_2020.xlsx')
+plt.figure(figsize=(18,8))
+
+ax = sns.boxplot(data=df_meaningful_col,
+                 x='total_unique_reviews')
+ax.set_xticks(list(range(0, 151, 2)))
+ax.gird(True)
