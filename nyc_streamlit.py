@@ -150,8 +150,49 @@ st.markdown('The number of "unique" reviews should be more than the **whisker po
 df_unique_outliers = load_data('nyc_unique_aibnb.xlsx')
 
 total_number_unique_aribnb, ax = plt.subplots(figsize=(2, 1))
+
 total_number_unique_aribnb.suptitle('Total number of unique Airbnb in New York', fontsize=15)
+
 ax.text(x=0, y=0, s=str(len(df_unique_outliers)), fontsize=40)
+
 ax.axis("off")
 
 st.pyplot(total_number_unique_aribnb)
+
+f, ax = plt.subplots(figsize=(20, 8))
+f.suptitle("Price Range")
+ax = sns.boxplot(data=df_unique_outliers,
+                    x='price')
+ax.set_xticks(list(range(0, 1500, 100)));
+st.pyplot(f)
+
+st.write('**0-300: Ok Price**')
+st.write('**Over 300: Near Luxury**')
+
+max_price = df_unique_outliers['price'].max()
+min_price = df_unique_outliers['price'].min()
+
+
+price_slider = st.slider("Choose a Price", round(int(min_price), -1),int(max_price), (30, 300), 10)
+
+f, ax = plt.subplots(figsize=(20, 8))
+f.suptitle("Price VS Neighborhood")
+ax = sns.histplot(data=df_unique_outliers,
+                    x='price',
+                    hue='neighbourhood_group_cleansed',
+                    multiple="stack",
+                    stat='count', bins=list(range(price_slider[0], price_slider[1], 50)))
+
+ax.set_xticks(list(range(price_slider[0], price_slider[1], 150)))
+st.pyplot(f)
+
+f, ax = plt.subplots(figsize=(20, 8))
+f.suptitle("Price VS Room type")
+ax = sns.histplot(data=df_unique_outliers,
+                    x='price',
+                    hue='room_type',
+                    multiple="stack",
+                    stat='count', bins=list(range(price_slider[0], price_slider[1], 50)))
+
+ax.set_xticks(list(range(price_slider[0], price_slider[1], 50)))
+st.pyplot(f)
