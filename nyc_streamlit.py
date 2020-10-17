@@ -10,6 +10,11 @@ warnings.filterwarnings('ignore')
 import streamlit as st
 from PIL import Image
 
+#NYC_Covid_Daily_CSV
+nyc_covid_daily_oct_2020 = pd.read_csv('nyc_covid_daily_oct_2020.csv', parse_dates=True)
+nyc_covid_daily_oct_2020['DATE_OF_INTEREST'] = pd.to_datetime(nyc_covid_daily_oct_2020['DATE_OF_INTEREST'])
+
+
 airbnb_image = Image.open('airbnb-678x381.jpg')
 st.image(airbnb_image, use_column_width = True)
 
@@ -19,9 +24,28 @@ st.write('- It allows you to rent apartments (or even entire houses) from people
 
 covid_image = Image.open('covid.jpg')
 st.image(covid_image, use_column_width = True)
+
+
 st.header('Covid - Why choose an Airbnb?')
 
 st.write('We are restricted to travel ever since the pandemic started. Therefore, the best option we have is to travel around the our area')
+
+f, ax = plt.subplots(figsize=(20, 8))
+
+f.suptitle('New York COVID-19 Cases', fontsize=25)
+
+plt.rc('font', size=15) #controls default text size
+plt.rc('axes', titlesize=20) #fontsize of the title
+plt.rc('axes', labelsize=20) #fontsize of the x and y labels
+plt.rc('xtick', labelsize=20) #fontsize of the x tick labels
+plt.rc('ytick', labelsize=20) #fontsize of the y tick labels
+plt.rc('legend', fontsize=20) #fontsize of the legend
+
+sns.lineplot(x='DATE_OF_INTEREST', y='Cases', data=nyc_covid_daily_oct_2020, ax=ax, label='Daily')
+sns.lineplot(x='DATE_OF_INTEREST', y='7-day average', data=nyc_covid_daily_oct_2020, ax=ax, label='7-day average')
+ax.grid(True)
+st.pyplot(f)
+
 st.write('So why choose an Airbnb?')
 
 st.markdown('**Live As a Local**')
@@ -58,5 +82,3 @@ st.header('How To choose an Airbnb?')
 # 5. Result: A short list of "unique" airbnb to choose
 # 6. Project difficulty
 
-if teacher_or_student != "Teacher":
-    folder_path + '
