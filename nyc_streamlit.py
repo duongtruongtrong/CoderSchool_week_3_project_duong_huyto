@@ -58,8 +58,8 @@ st.markdown('- Able to **rent apartments or even entire houses** from people all
 st.header('2. COVID - Why choose an Airbnb?')
 
 # NYC_Covid_Daily_CSV
-nyc_covid_daily_oct_2020 = load_data('nyc_covid_daily_oct_2020.csv')
-nyc_covid_daily_oct_2020['DATE_OF_INTEREST'] = pd.to_datetime(nyc_covid_daily_oct_2020['DATE_OF_INTEREST'])
+nyc_covid_daily_oct_2020 = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/nyc_covid_daily_oct_2020.csv')
+nyc_covid_daily_oct_2020['Date'] = pd.to_datetime(nyc_covid_daily_oct_2020['DATE_OF_INTEREST'])
 
 # NYC_Covid_Daily_Chart
 
@@ -74,8 +74,8 @@ covid, ax = plt.subplots(figsize=(18, 8))
 
 covid.suptitle('New York Daily New COVID-19 Cases', fontsize=25)
 
-sns.lineplot(x='DATE_OF_INTEREST', y='Cases', data=nyc_covid_daily_oct_2020, ax=ax, label='Daily')
-sns.lineplot(x='DATE_OF_INTEREST', y='7-day average', data=nyc_covid_daily_oct_2020, ax=ax, label='7-day average')
+sns.lineplot(x='Date', y='Cases', data=nyc_covid_daily_oct_2020, ax=ax, label='Daily')
+sns.lineplot(x='Date', y='7-day average', data=nyc_covid_daily_oct_2020, ax=ax, label='7-day average')
 ax.grid(True)
 
 st.pyplot(covid)
@@ -110,7 +110,7 @@ st.markdown('- **Travel in a group**, Airbnb is definitely cheaper than a tradit
 st.header('3. How To choose the best unique Airbnb?')
 
 # 3.1 Current number of airbnb listings in NYC: Chart and xlsx
-df_meaningful_col_light = load_data('cleansed_listings_meaningful_2020_light.xlsx')
+df_meaningful_col_light = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/cleansed_listings_meaningful_2020_light.xlsx')
 
 total_number_aribnb, ax = plt.subplots(figsize=(2, 1))
 total_number_aribnb.suptitle('Current number of Airbnb in New York\n(until 2020-09-09)', fontsize=15)
@@ -118,6 +118,9 @@ ax.text(x=0.1, y=0, s='{:,}'.format(len(df_meaningful_col_light)), fontsize=30)
 ax.axis("off")
 
 st.pyplot(total_number_aribnb)
+
+st.markdown('# Let us help you choose in a data way!')
+st.markdown('_No recommendation airbnb places based on your interior design interest._')
 
 # 3.2 Unique Airbnb concept
 st.subheader('What is unique Airbnb?')
@@ -164,7 +167,7 @@ st.markdown('- A unique listings only need to be unique to some people')
 st.markdown('- In addition, if the place is unique, most of reviewers only describe the place rather than mentioning the word "unique".')
 
 # Current number of airbnb listings in NYC: Chart and xlsx
-df_unique_outliers = load_data('nyc_unique_aibnb.xlsx')
+df_unique_outliers = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/nyc_unique_aibnb.xlsx')
 
 total_number_unique_aribnb, ax = plt.subplots(figsize=(2, 1))
 
@@ -348,14 +351,14 @@ df_covid_top20 = df_unique_outliers.groupby('id').agg(total_covid=('covid_case_r
 df_crime_top20 = df_unique_outliers.groupby('id').agg(total_crime=('total_crime_per_day', 'sum')).sort_values(by='total_crime', ascending=False).head(20).reset_index()
 
 covid, ax = plt.subplots(figsize=(10, 10))
-covid.suptitle('Top 20 COVID Airbnb', fontsize=25)
+covid.suptitle('Top 20 Most COVID Airbnb', fontsize=25)
 
 ax_barh(ax, df_covid_top20['total_covid'], df_covid_top20['id'].astype(str), 'COVID cases per 100k people', 'Airbnb listing id', data_label_format="{:,}")
 
 st.pyplot(covid)
 
 crime, ax = plt.subplots(figsize=(10, 10))
-crime.suptitle('Top 20 Crime Airbnb', fontsize=25)
+crime.suptitle('Top 20 Most Crime Airbnb', fontsize=25)
 
 ax_barh(ax, df_crime_top20['total_crime'], df_crime_top20['id'].astype(str), 'Number of crime per day', 'Airbnb listing id', data_label_format="{:,}")
 
@@ -363,15 +366,17 @@ st.pyplot(crime)
 
 avg_covid_crime, (ax1, ax2) = plt.subplots(2, 1, figsize=(2, 2), constrained_layout=True)
 
-avg_covid_case_rate = df_unique_outliers['covid_case_rate'].mean()
 
-ax1.set_title('Average COVID Cases per 100k People', fontsize=15)
-ax1.text(x=0.1, y=0.4, s='{:.1f}'.format(df_unique_outliers['covid_case_rate'].mean()), fontsize=30)
+df_covid = load_data('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/data-by-modzcta.csv')
+avg_covid_case_rate = df_covid['COVID_CASE_RATE'].mean()
+
+ax1.set_title('Average New York COVID Cases per 100k People', fontsize=15)
+ax1.text(x=0.1, y=0.4, s='{:.1f}'.format(avg_covid_case_rate), fontsize=30)
 ax1.axis("off")
 
 avg_total_crime_per_day = df_unique_outliers['total_crime_per_day'].mean()
 
-ax2.set_title('Average Crime Cases per Day', fontsize=15)
+ax2.set_title('Average New York Crime Cases per Day', fontsize=15)
 ax2.text(x=0.35, y=0.4, s='{:.1f}'.format(avg_total_crime_per_day), fontsize=30)
 ax2.axis("off")
 
@@ -446,10 +451,10 @@ st.pydeck_chart(pdk.Deck(
 
 # 4. Short List
 st.subheader('Result: Short List of Unique Airbnb')
-st.markdown('Criteria:')
+st.markdown('**Requirements**:')
 st.markdown('- Price: **under 300 USD**, the affordable price.')
 st.markdown('- Room type: **entir home/apt or private room or hotel room** with **private bathroom**, minimize COVID transmission.')
-st.markdown('- COVID cases per 100k: **under the average COVID cases** per 100k people.')
+st.markdown('- COVID cases per 100k: **under New York average COVID cases** per 100k people.')
 st.markdown('- Crime cases: **under the average crime cases** per day.')
 st.markdown('- Host location: **local host**, for local unque experience.')
 
@@ -473,20 +478,23 @@ columns_list = ['id',
 'bathrooms_type',
 'price_per_person',
 'is_local_host',
+'total_unique_reviews',
 'covid_case_rate',
 'total_crime_per_day',
+'latitude',
+'longitude'
 ]
 room_type_selector = st.selectbox("Select Room Type - Default: Private", df_unique_outliers['cleansed_room_type'].unique(), index=1)
-local_host_selector = st.selectbox("Select Host Type - Default: Local Host", df_unique_outliers['is_local_host'].unique(), index=1)
+local_host_selector = st.selectbox("Select Host Type - Default: Local Host", df_unique_outliers['is_local_host'].unique(), index=0)
 
 price_slider = st.slider("Price Range (USD) - Default: 0-300", 0, round(int(max_price), -1), (0, 300), 10)
 
 max_covid = df_unique_outliers['covid_case_rate'].max()
 max_crime = df_unique_outliers['total_crime_per_day'].max()
 
-covid_rate = st.slider("COVID cases (per 100k people) - Default: {:.1f}".format(avg_covid_case_rate), 0, max_covid, avg_covid_case_rate)
+covid_rate = st.slider("COVID cases (per 100k people) - Default: {:.1f}".format(avg_covid_case_rate), 0.0, max_covid, float(avg_covid_case_rate))
 
-crime_rate = st.slider("Crime cases (per day) - Default: {:.1f}".format(avg_total_crime_per_day), 0, max_crime, avg_total_crime_per_day)
+crime_rate = st.slider("Crime cases (per day) - Default: {:.1f}".format(avg_total_crime_per_day), 0.0, max_crime, float(avg_total_crime_per_day))
 
 df_short_list = df_unique_outliers[columns_list][(df_unique_outliers['price'] >= price_slider[0]) 
                                                   & (df_unique_outliers['price'] <= price_slider[1])
@@ -497,3 +505,14 @@ df_short_list = df_unique_outliers[columns_list][(df_unique_outliers['price'] >=
                                                   ]
 
 df_short_list
+
+# Location
+st.map(df_short_list[['latitude', 'longitude']], use_container_width=True)
+
+st.markdown('## Only 1 place can meet all of the requirements.')
+
+# 5. Project difficulty
+st.subheader('Project difficulty')
+st.markdown('- Limited in showing more information in tooltips of Airbnb on map. Can only 1 aggerated number.')
+st.markdown('- Detecting synonyms of the word "unique" in reviews: "special" appear in "especial" -> Had to re-run everything.')
+st.markdown('- Matching COVID data and crime data to Airbnb data set via latitude and longitude, they are not 1-1 match.')
