@@ -77,13 +77,16 @@ plt.rc('legend', fontsize=22) #fontsize of the legend
 
 covid, ax = plt.subplots(figsize=(18, 8))
 
-covid.suptitle('New York COVID-19 Cases', fontsize=25)
+covid.suptitle('New York Daily New COVID-19 Cases', fontsize=25)
 
 sns.lineplot(x='DATE_OF_INTEREST', y='Cases', data=nyc_covid_daily_oct_2020, ax=ax, label='Daily')
 sns.lineplot(x='DATE_OF_INTEREST', y='7-day average', data=nyc_covid_daily_oct_2020, ax=ax, label='7-day average')
 ax.grid(True)
 
 st.pyplot(covid)
+
+st.markdown('### Number of new COVID cases in New York is stable around 1000 cases/day, and decreasing.')
+st.markdown('## It is about time to get away and relax **safely**!')
 
 # Airbnb in COVID reasons
 st.subheader('You are a New Yorker')
@@ -109,11 +112,9 @@ st.header('3. How To choose the best unique Airbnb?')
 # 3.1 Current number of airbnb listings in NYC: Chart and xlsx
 df_meaningful_col_light = load_data('cleansed_listings_meaningful_2020_light.xlsx')
 
-total_number_aribnb_nyc = len(df_meaningful_col_light)
-
 total_number_aribnb, ax = plt.subplots(figsize=(2, 1))
-total_number_aribnb.suptitle('Current number of Airbnb in New York', fontsize=15)
-ax.text(x=0, y=0, s=str(total_number_aribnb_nyc), fontsize=40)
+total_number_aribnb.suptitle('Current number of Airbnb in New York\n(until 2020-09-09)', fontsize=15)
+ax.text(x=0.1, y=0, s='{:,}'.format(len(df_meaningful_col_light)), fontsize=30)
 ax.axis("off")
 
 st.pyplot(total_number_aribnb)
@@ -133,19 +134,19 @@ st.markdown('''**"Unique" Review of listing id 27930717**: The location of this 
 # Airbnb total review distribution chart
 st.subheader('Number of "unique" reviews.')
 
-unique_review, ax = plt.subplots(figsize=(18, 5))
-unique_review.suptitle('Number of "Unique" Reviews Distrubution', fontsize=25)
+unique_review, ax = plt.subplots(figsize=(20, 5))
+unique_review.suptitle('Number of "Unique" Reviews Distribution', fontsize=25)
 
 sns.boxplot(data=df_meaningful_col_light,
             x='total_unique_reviews',
             ax=ax)
-ax.set_xticks(list(range(0, 8, 2)) + list(range(10, 161, 50)))
+ax.set_xticks(list(range(0, 8, 2)) + list(range(10, 136, 25)))
 
 st.pyplot(unique_review)
 
 st.markdown('Most of Aibnb has less than **2 "unique" reviews**, which is **too small**.')
 st.markdown('The more "unique" reviews the Airbnb has, the more authentically unique the Airbnb is.')
-st.markdown('The number of "unique" reviews should be more than the **whisker point** to be called a unique Aribnb.')
+st.markdown('The number of "unique" reviews should be more than the **upper whisker point** to be called a unique Aribnb.')
 
 # Current number of airbnb listings in NYC: Chart and xlsx
 df_unique_outliers = load_data('nyc_unique_aibnb.xlsx')
@@ -154,50 +155,64 @@ total_number_unique_aribnb, ax = plt.subplots(figsize=(2, 1))
 
 total_number_unique_aribnb.suptitle('Total number of unique Airbnb in New York', fontsize=15)
 
-ax.text(x=0, y=0, s=str(len(df_unique_outliers)), fontsize=40)
+ax.text(x=0.1, y=0, s='{:,}'.format(len(df_unique_outliers)), fontsize=30)
 
 ax.axis("off")
 
 st.pyplot(total_number_unique_aribnb)
 
 # 3.2 Price Range with: Neighborhood and Room types
-price_range, ax = plt.subplots(figsize=(20, 8))
-price_range.suptitle("Price Ranges")
+st.subheader('Price Ranges of "Unique" Airbnb')
+
+price_range, ax = plt.subplots(figsize=(20, 5))
+price_range.suptitle("Price Ranges", fontsize=25)
 sns.boxplot(data=df_unique_outliers,
             x='price',
             ax=ax)
-ax.set_xticks(list(range(0, 1500, 100)))
+ax.set_xticks(list(range(0, 701, 100)) + list(range(700, 2701, 400)))
 st.pyplot(price_range)
 
-st.write('**0-300: Reasonable Price**')
-st.write('**Over 300: Comming to Luxury**')
+st.markdown('Most "unique" Airbnb have price under 200 USD.')
+st.markdown('The upper whisker point is around 350 USD, rounding it down to 300 USD as the first breaking point of "unique" Airbnb price ranges:')
+st.markdown('**0-300**: Reasonable Price (round down from the upper whisker point)')
+st.markdown('**Over 300**: Comming to Luxury')
+
+# 3.2.1 Price Distribution in Term of Neighborhood
+st.subheader('Price Distribution')
 
 max_price = df_unique_outliers['price'].max()
 min_price = df_unique_outliers['price'].min()
 
+price_slider = st.slider("Choose a Price Range (USD)", 0, round(int(max_price), -1), (0, 300), 10)
+bins_price = list(range(price_slider[0], price_slider[1] + 1, 50))
 
-price_slider = st.slider("Choose a Price", round(int(min_price), -1),int(max_price), (30, 300), 10)
+# for clearer xticks, when over 1000 USD the intervals must be 200 (instead of 100)
+if price_slider[1] > 1000 and price_slider[0] < 1000:
+    xticks_price = list(range(price_slider[0], 901, 100)) + list(range(900, price_slider[1], 200))
+elif price_slider[1] > 1000 and price_slider[0] > 1000:
+    xticks_price = list(range(price_slider[0], price_slider[1] + 1, 200))
+else:
+    xticks_price = list(range(price_slider[0], price_slider[1] + 1, 100))
 
-f, ax = plt.subplots(figsize=(20, 8))
-f.suptitle("Price vs Neighborhood")
+
+price_neighborhood_room_type, (ax1, ax2) = plt.subplots(2, 1, figsize=(20, 18), constrained_layout=True)
 sns.histplot(data=df_unique_outliers,
             x='price',
             hue='neighbourhood_group_cleansed',
-            ax=ax,
+            ax=ax1,
             multiple="stack",
-            stat='count', bins=list(range(price_slider[0], price_slider[1], 50)))
+            stat='count', bins=bins_price
+            )
+ax1.set_title("Price vs Neighborhood", fontsize=25)
+ax1.set_xticks(xticks_price)
 
-ax.set_xticks(list(range(price_slider[0], price_slider[1], 150)))
-st.pyplot(f)
-
-f, ax = plt.subplots(figsize=(20, 8))
-f.suptitle("Price vs Room types")
 sns.histplot(data=df_unique_outliers,
             x='price',
             hue='room_type',
-            ax=ax,
+            ax=ax2,
             multiple="stack",
-            stat='count', bins=list(range(price_slider[0], price_slider[1], 50)))
+            stat='count', bins=bins_price)
+ax2.set_title("Price vs Room types", fontsize=25)
+ax2.set_xticks(xticks_price)
 
-ax.set_xticks(list(range(price_slider[0], price_slider[1], 50)))
-st.pyplot(f)
+st.pyplot(price_neighborhood_room_type)
