@@ -57,10 +57,6 @@ st.markdown('- Able to **rent apartments or even entire houses** from people all
 
 # 2. COVID - Why still airbnb?
 st.header('2. COVID - Why choose an Airbnb?')
-covid_image = Image.open('covid.jpg')
-st.image(covid_image, use_column_width = True)
-
-st.write('We are **restricted to travel** ever since the pandemic started. Therefore, the **best option** we have is to travel **around our area**.')
 
 # NYC_Covid_Daily_CSV
 nyc_covid_daily_oct_2020 = load_data('nyc_covid_daily_oct_2020.csv')
@@ -87,6 +83,11 @@ st.pyplot(covid)
 
 st.markdown('### Number of new COVID cases in New York is stable around 1000 cases/day, and decreasing.')
 st.markdown('## It is about time to get away and relax **safely**!')
+
+covid_image = Image.open('covid.jpg')
+st.image(covid_image)
+
+st.write('We are **restricted to travel** ever since the pandemic started. Therefore, the **best option** we have is to travel **around our area**.')
 
 # Airbnb in COVID reasons
 st.subheader('You are a New Yorker')
@@ -131,6 +132,16 @@ st.markdown('''**"Unique" Review of listing id 9576478**: Vitaliy provided very 
 
 st.markdown('''**"Unique" Review of listing id 27930717**: The location of this apartment is great - very close to the subway and it allows you to reach Manhattan quickly. Good restaurants in the neighborhood. Maxime's (Hidden by Airbnb) , who were at home when we stayed, were absolutely fantastic and they made our experience in NYC **special**.''')
 
+# Poplular words in "unique" review
+st.markdown('**Poplular words in "unique" review**')
+popular_word_image = Image.open('popular_words_unique_review.png')
+st.image(popular_word_image, use_column_width = True)
+
+st.subheader('Why unique Airbnb?')
+st.markdown('You are **a New Yorker**.')
+st.markdown('- Already too familiar to New York.')
+st.markdown('- You need something **new**, something **unique** around New York.')
+
 # Airbnb total review distribution chart
 st.subheader('Number of "unique" reviews.')
 
@@ -146,7 +157,12 @@ st.pyplot(unique_review)
 
 st.markdown('Most of Aibnb has less than **2 "unique" reviews**, which is **too small**.')
 st.markdown('The more "unique" reviews the Airbnb has, the more authentically unique the Airbnb is.')
-st.markdown('The number of "unique" reviews should be more than the **upper whisker point** to be called a unique Aribnb.')
+st.markdown('The **number of "unique" reviews** should be **over the upper whisker point** to be called a unique Aribnb.')
+
+st.markdown('Not using "unique" review rate because:')
+st.markdown('- High "unique" review rate does not mean the place is really unique, there may be only a few reviews in total.')
+st.markdown('- A unique listings only need to be unique to some people')
+st.markdown('- In addition, if the place is unique, most of reviewers only describe the place rather than mentioning the word "unique".')
 
 # Current number of airbnb listings in NYC: Chart and xlsx
 df_unique_outliers = load_data('nyc_unique_aibnb.xlsx')
