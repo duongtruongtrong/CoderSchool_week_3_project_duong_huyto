@@ -85,7 +85,7 @@ st.markdown('### Number of new COVID cases in New York is stable around 1000 cas
 st.markdown('## It is about time to get away and relax **safely**!')
 
 covid_image = Image.open('covid.jpg')
-st.image(covid_image)
+st.image(covid_image, use_column_width = True)
 
 st.write('We are **restricted to travel** ever since the pandemic started. Therefore, the **best option** we have is to travel **around our area**.')
 
