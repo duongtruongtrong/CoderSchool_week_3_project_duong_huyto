@@ -305,11 +305,10 @@ def ax_barh(ax, x, y, x_label, y_label, align='center', height=0.8, reverse_y=Tr
             width = rect.get_width()
             height = rect.get_height()
 
-            for x_data, y_data in zip(x,y):
-                if data_label_format != 'human_format':
-                    label = data_label_format.format(width) # format data label
-                else: 
-                    label = human_format(width)
+            if data_label_format != 'human_format':
+                label = data_label_format.format(width) # format data label
+            else: 
+                label = human_format(width)
 
             ax.annotate(label,
                         xy=(width, rect.get_y() + height / 1.5),
