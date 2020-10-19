@@ -120,7 +120,7 @@ ax.axis("off")
 st.pyplot(total_number_aribnb)
 
 st.markdown('# Let us help you choose in a data way!')
-st.markdown('_No recommendation airbnb places based on your interior design interest._')
+st.markdown('_No recommendation Airbnb places based on your interior design interest._')
 
 # 3.2 Unique Airbnb concept
 st.subheader('What is unique Airbnb?')
