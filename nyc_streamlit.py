@@ -80,7 +80,7 @@ ax.grid(True)
 
 st.pyplot(covid)
 
-st.markdown('### Number of new COVID cases in New York is stable around 1000 cases/day, and decreasing.')
+st.markdown('### Number of new COVID cases in New York is stable under 1000 cases/day, and decreasing.')
 st.markdown('## It is about time to get away and relax **safely**!')
 
 covid_image = Image.open('covid.jpg')
@@ -453,7 +453,7 @@ st.pydeck_chart(pdk.Deck(
 st.subheader('Result: Short List of Unique Airbnb')
 st.markdown('**Requirements**:')
 st.markdown('- Price: **under 300 USD**, the affordable price.')
-st.markdown('- Room type: **entir home/apt or private room or hotel room** with **private bathroom**, minimize COVID transmission.')
+st.markdown('- Room type: **entire home/apt** or **private room** or **hotel room** with **private bathroom**, minimize COVID transmission.')
 st.markdown('- COVID cases per 100k: **under New York average COVID cases** per 100k people.')
 st.markdown('- Crime cases: **under the average crime cases** per day.')
 st.markdown('- Host location: **local host**, for local unque experience.')
