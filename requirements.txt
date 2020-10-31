@@ -2,7 +2,6 @@ numpy
 pandas
 seaborn
 matplotlib
-warnings
 streamlit
 pillow
 pydeck
