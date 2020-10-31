@@ -127,7 +127,7 @@ st.subheader('What is unique Airbnb?')
 st.markdown('Airbnb with reviews **containing the word "unique"** and its synonyms: distinctive, special, extraordinary.')
 
 st.markdown('**Example**:')
-df_sample_review = load_data('review_sample.xlsx')
+df_sample_review = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/review_sample.csv')
 st.dataframe(df_sample_review)
 
 st.markdown('''**"Unique" Review of listing id 9576478**: Vitaliy provided very informative directions and instructions on getting into the apartment. The apartment was exactly like it was in the photos. Harlem is a **unique** neighbourhood in NYC and will give you a different flavour of the city.''')
@@ -167,7 +167,7 @@ st.markdown('- A unique listings only need to be unique to some people')
 st.markdown('- In addition, if the place is unique, most of reviewers only describe the place rather than mentioning the word "unique".')
 
 # Current number of airbnb listings in NYC: Chart and xlsx
-df_unique_outliers = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/nyc_unique_aibnb.xlsx')
+df_unique_outliers = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/nyc_unique_aibnb.csv')
 
 total_number_unique_aribnb, ax = plt.subplots(figsize=(2, 1))
 
