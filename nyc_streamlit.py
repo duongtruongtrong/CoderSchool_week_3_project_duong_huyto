@@ -290,81 +290,13 @@ st.markdown('**Private room and entire home/appartment** are prioritized to **mi
 st.subheader('Location: Where is safe?')
 st.markdown('### COVID cases and Crime cases around 25$km^2$ area around an Airbnb.')
 
-def ax_barh(ax, x, y, x_label, y_label, align='center', height=0.8, reverse_y=True, label=None, title=None, data_label_format='{}', grid=True, data_label=True):
-
-    def human_format(num, round_to=2):
-        magnitude = 0
-        while abs(num) >= 1000:
-            magnitude += 1
-            num = round(num / 1000.0, round_to)
-        return '{:.{}f}{}'.format(round(num, round_to), round_to, ['', 'K', 'M', 'G', 'T', 'P'][magnitude])
-
-    def autolabel(rects, data_label_format=data_label_format):
-        """Attach a text label above each bar in *rects*, displaying its height."""
-        for rect in rects:
-            width = rect.get_width()
-            height = rect.get_height()
-
-            if data_label_format != 'human_format':
-                label = data_label_format.format(width) # format data label
-            else: 
-                label = human_format(width)
-
-            ax.annotate(label,
-                        xy=(width, rect.get_y() + height / 1.5),
-                        # xytext=(2,-5),  # 2 points horizontal and -5 points vertial offset
-                        # textcoords="offset points",
-                        ha='left')
-    rects = ax.barh(y, x, 
-            align=align,
-            # Alignment of the base to the y coordinates*:
-            #   'center': Center the bars on the y positions.
-            #   'edge': Align the bottom edges of the bars with the y positions.
-            # To align the bars on the top edge pass a negative height and align='edge'.
-
-            height=height,
-            # float or array-like, default: 0.8
-            # The heights of the bars.
-            
-            label=label
-            )
-    if reverse_y==True:
-        ax.invert_yaxis()
-
-    ax.set_title(title)
-    ax.set_ylabel(y_label)
-    ax.set_xlabel(x_label)
-    ax.grid(grid)
-
-    if data_label == True:
-        autolabel(rects)
-
 # https://medium.com/@ahmetemin.tek.66/build-a-data-science-web-app-with-streamlit-and-python-4a9bdba35449
 midpoint = [np.average(df_unique_outliers['latitude']), np.average(df_unique_outliers['longitude'])]
 
 df_unique_outliers['covid_case_rate'] = df_unique_outliers['covid_case_rate'].round(1)
 df_unique_outliers['total_crime_per_day'] = df_unique_outliers['total_crime_per_day'].round(1)
 
-df_covid_top20 = df_unique_outliers.groupby('id').agg(total_covid=('covid_case_rate', 'sum')).sort_values(by='total_covid', ascending=False).head(20).reset_index()
-
-df_crime_top20 = df_unique_outliers.groupby('id').agg(total_crime=('total_crime_per_day', 'sum')).sort_values(by='total_crime', ascending=False).head(20).reset_index()
-
-covid, ax = plt.subplots(figsize=(10, 10))
-covid.suptitle('Top 20 Most COVID Airbnb', fontsize=25)
-
-ax_barh(ax, df_covid_top20['total_covid'], df_covid_top20['id'].astype(str), 'COVID cases per 100k people', 'Airbnb listing id', data_label_format="{:,}")
-
-st.pyplot(covid)
-
-crime, ax = plt.subplots(figsize=(10, 10))
-crime.suptitle('Top 20 Most Crime Airbnb', fontsize=25)
-
-ax_barh(ax, df_crime_top20['total_crime'], df_crime_top20['id'].astype(str), 'Number of crime per day', 'Airbnb listing id', data_label_format="{:,}")
-
-st.pyplot(crime)
-
 avg_covid_crime, (ax1, ax2) = plt.subplots(2, 1, figsize=(2, 2), constrained_layout=True)
-
 
 df_covid = load_data('https://raw.githubusercontent.com/nychealth/coronavirus-data/master/data-by-modzcta.csv')
 avg_covid_case_rate = df_covid['COVID_CASE_RATE'].mean()
