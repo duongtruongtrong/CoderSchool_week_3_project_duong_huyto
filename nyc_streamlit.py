@@ -110,7 +110,7 @@ st.markdown('- **Travel in a group**, Airbnb is definitely cheaper than a tradit
 st.header('3. How To choose the best unique Airbnb?')
 
 # 3.1 Current number of airbnb listings in NYC: Chart and xlsx
-df_meaningful_col_light = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/cleansed_listings_meaningful_2020_light.xlsx')
+df_meaningful_col_light = load_data('https://raw.githubusercontent.com/duongtruongtrong/CoderSchool_week_3_project_duong_huyto/master/cleansed_listings_meaningful_2020_light.csv')
 
 total_number_aribnb, ax = plt.subplots(figsize=(2, 1))
 total_number_aribnb.suptitle('Current number of Airbnb in New York\n(until 2020-09-09)', fontsize=15)
