@@ -34,9 +34,9 @@ import pydeck as pdk
 # Cache functions
 
 @st.cache(allow_output_mutation=True)
-def load_data(path):
+def load_data(path, encoding=None):
     try:
-        data = pd.read_excel(path)
+        data = pd.read_excel(path, encoding=encoding)
     except:
         data = pd.read_csv(path)
     return data
